@@ -5,7 +5,8 @@ const cpModel: Schema = new Schema({
     pincode: Number,
     address: String
   },
-  nodalPoints: Array,
+  nodalPoint: String,
+  apex:String,
   employee: Array,
   phone: Number,
   email: String,
