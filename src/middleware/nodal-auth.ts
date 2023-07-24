@@ -1,7 +1,7 @@
 import { Request,Response,NextFunction } from "express"
-import { verify } from "jsonwebtoken"
+import { verify ,JwtPayload} from "jsonwebtoken"
 
-const tokenCheck = (req:Request ,res:Response,next:NextFunction) =>{
+const nodalCheck = (req:Request ,res:Response,next:NextFunction) =>{
     const {key} = req.headers
     if(key){
         let token: string;
@@ -10,11 +10,12 @@ const tokenCheck = (req:Request ,res:Response,next:NextFunction) =>{
         } else {
           token = key.split(" ")[1];
         }
-        if(verify(token,String(process.env.JWT_SIGNATURE)))next()
-        else res.status(401).json({message:"invalid-token"})
+        const data = verify(token,String(process.env.JWT_SIGNATURE)) as JwtPayload
+        if(data && data.administration == 'nodal')next()
+        else res.status(401).json({message:"Unauthorized"})
     }else{
         res.status(401).json({message:"required jwt-token"})
     } 
 }
 
-export default tokenCheck
+export default nodalCheck

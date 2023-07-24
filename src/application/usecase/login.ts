@@ -9,7 +9,7 @@ export const cpLogin = async (data: any): Promise<{ message: string; token?: str
         const cpExist = await repository.cpLogin(id)
         if (cpExist) {
             if (await compare(password, cpExist.password)) {
-                return { message: "success", token: sign({ id: id }, String(process.env.JWT_SIGNATURE), { expiresIn: '24h' }) }
+                return { message: "success", token: sign({ id: id ,administration:"channelPartner"}, String(process.env.JWT_SIGNATURE), { expiresIn: '24h' }) }
             }
             return { message: "wrong password" }
         } return { message: "CP not exist" }
