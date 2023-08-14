@@ -6,8 +6,16 @@ const cpModel: Schema = new Schema({
     address: String
   },
   nodalPoint: String,
+  consignmentPrefix:String,
   apex:String,
   employee: Array,
+  consignments : {
+    normal:[Number],
+    WE:[Number],
+    PR:[Number]
+  },
+  id:String,
+  name:String,
   phone: Number,
   email: String,
   password:String,

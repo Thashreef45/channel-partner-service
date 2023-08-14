@@ -1,13 +1,22 @@
 import repository from "../../infrastructure/repositories/repository"
 import { verify } from "jsonwebtoken"
 
-export const cpData = async (id: string) => {
+const cpData = async (id: string) => {
     try {
-        id = id.split(" ")[1]
-        const encKey = verify(String(id), String(process.env.JWT_SIGNATURE))
-        if (typeof encKey != 'string') id = encKey.id
-        return await repository.getCpData(id)
+        const data = await repository.getCpData(id)
+        if(data) {
+            data.message = 'success'
+            data.status = 200
+            return data
+        }else{
+            return {
+                message : 'Channel-partner not found',
+                status : 404
+            }
+        }
     } catch (error) {
         console.log(error)
     }
 }
+
+export default cpData

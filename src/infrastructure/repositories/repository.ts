@@ -14,16 +14,15 @@ export default {
     findByPin :async (pin:number) => {
         return await Model.findOne({'address.pincode':pin},{password:0,fdm:0,employee:0})
     },
-    createCP : async(data:{pincode: Number,address: String,nodalPoint: String,phone: Number,email: String,password:String,apex:String,}) =>{
-        const {address,pincode , nodalPoint , apex , phone , email , password} = data
-        const newCP = new Model({
-            address:{
-                address:address,
-                pincode : pincode
-            },nodalPoint , apex , phone , email , password
-        })
-        newCP.save()
-        return data
+
+    assignAwb : async(id:string,data:any) => {
+        console.log(data,'data at repo')
+        return Model.updateOne({id:id},{$set:{consignments:data}})
+    },
+
+    getCpAwb : async(data:any) => {
+        return await Model.findOne({id:data},{consignments:1 ,_id:0})
     }
+
 
 } 
