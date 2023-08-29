@@ -1,13 +1,13 @@
-import { type Request, type Response } from 'express'
 import cpData from '../../application/usecase/get-data'
 import findByPincode from '../../application/usecase/findby-pincode'
+import findById from '../../application/usecase/findby-id'
+import ValidateAwb from '../../application/usecase/validate-awb'
 
 export default {
 
     cpdata: async (call:any,callback:any) => {
         try {
             const data =await cpData(call.request.id)
-            console.log('!!!data ',data)
             callback(null,data)
         } catch (error) {
             console.log(error)
@@ -22,4 +22,22 @@ export default {
             console.log(error)
         }
     },
+
+    searchById : async (call:any,callback:any) => {
+        try {
+            const response = await findById(call.request.id)
+            callback(null,response)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    validateAwb : async (call:any,callback:any) => {
+        try {
+            const response = await ValidateAwb(call.request)
+            callback(null,response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

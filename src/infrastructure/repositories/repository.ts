@@ -12,16 +12,23 @@ export default {
     },
 
     findByPin :async (pin:number) => {
-        return await Model.findOne({'address.pincode':pin},{password:0,fdm:0,employee:0})
+        return await Model.findOne({'address.pincode':pin},{password:0,fdm:0,employee:0,consignments:0})
+    },
+
+    findById :async (id:string) => {
+        return await Model.findOne({id:id},{password:0,fdm:0,employee:0,consignments:0})
     },
 
     assignAwb : async(id:string,data:any) => {
-        console.log(data,'data at repo')
         return Model.updateOne({id:id},{$set:{consignments:data}})
     },
 
-    getCpAwb : async(data:any) => {
-        return await Model.findOne({id:data},{consignments:1 ,_id:0})
+    getCpAwb : async(id:string) => {
+        return await Model.findOne({id:id},{consignments:1 ,_id:0})
+    },
+
+    isAwbExist : async(cpId:string,prefix:string,awbNumber:number) =>{
+        return await Model.findOne({id:cpId,[`consignments.${prefix}`]:{$in:[awbNumber]}},{password:0,fdm:0,employee:0,consignments:0})
     }
 
 

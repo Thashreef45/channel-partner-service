@@ -6,6 +6,7 @@ import logger from 'morgan';
 import cors from 'cors';
 import env from 'dotenv';
 import grpcServer from './src/interfaces/grpc-config/grpc-server';
+import addConsignments from './src/application/events/consumers/assign-consignments';
 
 
 class nodeApp {
@@ -16,6 +17,7 @@ class nodeApp {
     this.app = express()
     this.initialiseMiddleware()
     this.initiliseGatewayListner()
+    this.messageConsumers()
   }
 
   private initialiseMiddleware(): void {
@@ -26,6 +28,10 @@ class nodeApp {
     this.app.use(logger('dev'))
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
+  }
+
+  private messageConsumers(){
+    addConsignments()
   }
 
   private initiliseGatewayListner(): void {
