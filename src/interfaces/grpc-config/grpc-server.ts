@@ -25,6 +25,8 @@ const grpcServer = () => {
 
 
 server.addService(cpPackage.cpService.service,{
+    "createCP":controller.createCp,
+    "Login":controller.cpLogin,
     "Home" : controller.cpdata,
     "searchByPin" : controller.searchByPincode,
     "searchById": controller.searchById,

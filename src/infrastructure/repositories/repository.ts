@@ -3,6 +3,22 @@ import Model from "../../domain/entities/cp-model";
 connectDB()
 
 export default {
+
+    createCP : async(data:any) =>{
+        console.log(data,'for signup')
+        const newCP = new Model({
+            id:data.id,
+            address:data.address,
+            pincode:data.pincode,
+            nodalPoint:data.nodalPoint ,
+            phone:data.phone, 
+            email:data.email, 
+            password:data.password,
+            consignmentPrefix:data.consignmentPrefix
+        })
+        return await newCP.save()
+    },
+
     cpLogin : async(id:string) =>{
         return await Model.findOne({id:id})
     },
@@ -29,7 +45,14 @@ export default {
 
     isAwbExist : async(cpId:string,prefix:string,awbNumber:number) =>{
         return await Model.findOne({id:cpId,[`consignments.${prefix}`]:{$in:[awbNumber]}},{password:0,fdm:0,employee:0,consignments:0})
-    }
+    },
 
+    removeAwb : async(cpId:string,prefix:string,awbNumber:number)=>{
+        const consignments:any = {}
+        const key:string = "consignments." + prefix
+        consignments[key] = awbNumber
+        
+        await Model.updateOne({id:cpId},{$pull:consignments})
+    }
 
 } 
