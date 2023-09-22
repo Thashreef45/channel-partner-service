@@ -1,6 +1,6 @@
 import nodeApp from "./app";
 
-const server = new nodeApp()
+const Port = String(process.env.PORT)
+new nodeApp().listen(Port)
 
-server.listen()
 
