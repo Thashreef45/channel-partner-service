@@ -5,7 +5,6 @@ connectDB()
 export default {
 
     createCP : async(data:any) =>{
-        console.log(data,'for signup')
         const newCP = new Model({
             id:data.id,
             address:data.address,
@@ -28,7 +27,7 @@ export default {
     },
 
     findByPin :async (pin:number) => {
-        return await Model.findOne({'address.pincode':pin},{password:0,fdm:0,employee:0,consignments:0})
+        return await Model.findOne({pincode:pin},{password:0,fdm:0,employee:0,consignments:0})
     },
 
     findById :async (id:string) => {
@@ -47,12 +46,22 @@ export default {
         return await Model.findOne({id:cpId,[`consignments.${prefix}`]:{$in:[awbNumber]}},{password:0,fdm:0,employee:0,consignments:0})
     },
 
+    //remove used awb after bookin
     removeAwb : async(cpId:string,prefix:string,awbNumber:number)=>{
         const consignments:any = {}
         const key:string = "consignments." + prefix
         consignments[key] = awbNumber
         
         await Model.updateOne({id:cpId},{$pull:consignments})
+    },
+
+    getCpEmployees :async (id:string) => {
+        return await Model.findOne({id:id},{_id:0,employee:1})
+    },
+
+    addEmployee : async (id:string,data:any) => {
+        
+        return await Model.updateOne({id},{$push:{employee:data}})
     }
 
 } 

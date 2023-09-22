@@ -11,14 +11,27 @@ const cpModel: Schema = new Schema({
   nodalPoint: String,
   consignmentPrefix: String,
   apex: String,
-  employee: Array,
+  employee: [
+    {
+      name:String,
+      email:String,
+      phone:Number
+    }
+  ],
   consignments: {
     normal: [Number],
     WE: [Number],
     PR: [Number]
   },
   password: String,
-  fdm: Array
+  fdm: {
+    sending :[
+      {consignmentId:String}
+    ],
+    recieved : [
+      {consignmentId:String}
+    ]
+  }
 })
 
 const Model = model('channel-partner', cpModel)

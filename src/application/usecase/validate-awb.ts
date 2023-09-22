@@ -1,12 +1,15 @@
 import repository from "../../infrastructure/repositories/repository"
+import decryptToken from "../../utils/token-dcrypt"
 
 
 const ValidateAwb = async (data: any) => {
 
-    const cpExist = await repository.findById(data.cpId)
+    const id = decryptToken(data.token)
+    const cpExist = await repository.findById(id)
     if (!cpExist) {
         return { message: 'Unable to find CP', status: 404 }
     } else {
+        data.cpId = id
         return await excuteValidation(data)
     }
 }
@@ -59,3 +62,5 @@ const validateAwbExistence = async(data:any,prefix:string,awb:number) => {
         return { message: 'Valid AWB', status: 200 }
     }
 } 
+
+

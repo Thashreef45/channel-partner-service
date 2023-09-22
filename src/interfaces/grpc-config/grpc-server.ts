@@ -5,7 +5,7 @@ import controller from '../controller/controller'
 
 
 config()
-const packageDef = protoLoader.loadSync('src/interfaces/grpc-config/cp.proto')
+const packageDef = protoLoader.loadSync('/home/thashreef/Brototype/express-link/server/microservices/channel-partner/src/interfaces/grpc-config/cp.proto')
 const grpcObject = grpc.loadPackageDefinition(packageDef)
 const cpPackage:any = grpcObject.cpPackage;
 
@@ -31,6 +31,8 @@ server.addService(cpPackage.cpService.service,{
     "searchByPin" : controller.searchByPincode,
     "searchById": controller.searchById,
     "validateAwb" : controller.validateAwb,
+    "getEmployees":controller.getCpEmployees,
+    "createEmployee":controller.CreateNewEmployee,
 })
 
 

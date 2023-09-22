@@ -5,6 +5,8 @@ import ValidateAwb from '../../application/usecase/validate-awb'
 import { CpdataCall, GrpcCallBack, SearchById, SearchByPinCall, ValidateAwbCall } from '../types/interfaces'
 import login from '../../application/usecase/login'
 import createCP from '../../application/usecase/create-cp'
+import getEmployees from '../../application/usecase/get-employees'
+import CreateNewEmployee from '../../application/usecase/add-new-employee'
 
 export default {
 
@@ -54,5 +56,22 @@ export default {
         }
     },
 
+    getCpEmployees : async (call:any,callback:any)=>{
+        try {
+            const response = await getEmployees(call.request.token)
+            callback(null,response)
+        } catch (error) {
+            
+        }
+    },
+
+    CreateNewEmployee : async (call:any,callback:any) => {
+        try {
+            const response = await CreateNewEmployee(call.request)
+            callback(null,response)
+        } catch (error) {
+            
+        }
+    }
 
 }
