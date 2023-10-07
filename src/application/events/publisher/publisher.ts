@@ -30,7 +30,20 @@ const addCpToNodal = (data: any) => {
     }
 }
 
+
+const SendFdmToNodal = (data:{data:[string],nodalId:string,address:string,name:string})=> {
+    try {
+        
+        const queue = 'fdm-cp-to-nodal'
+        publisher(queue,data)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 export default {
-    addCpToNodal
+    addCpToNodal,
+    SendFdmToNodal
 }
 

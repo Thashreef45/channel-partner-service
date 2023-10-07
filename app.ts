@@ -8,6 +8,7 @@ import env from 'dotenv';
 import grpcServer from './src/interfaces/grpc-config/grpc-server';
 import addConsignments from './src/application/events/consumers/assign-consignments';
 import removeAwb from './src/application/events/consumers/remove-booked-awb';
+import resetAwb from './src/application/events/consumers/reset-awb';
 
 
 class nodeApp {
@@ -34,6 +35,7 @@ class nodeApp {
   private messageConsumers(){
     addConsignments()
     removeAwb()
+    resetAwb()
   }
 
   private initiliseGatewayListner(): void {

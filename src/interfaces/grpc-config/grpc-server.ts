@@ -9,6 +9,7 @@ const packageDef = protoLoader.loadSync('/home/thashreef/Brototype/express-link/
 const grpcObject = grpc.loadPackageDefinition(packageDef)
 const cpPackage:any = grpcObject.cpPackage;
 
+
 const server = new grpc.Server()
 
 const grpcServer = () => {
@@ -33,6 +34,9 @@ server.addService(cpPackage.cpService.service,{
     "validateAwb" : controller.validateAwb,
     "getEmployees":controller.getCpEmployees,
     "createEmployee":controller.CreateNewEmployee,
+    "fdmToNodal":controller.getCpFdmDetails,
+    "assignFdmToNodal":controller.assignFdmtoNodal,
+    
 })
 
 

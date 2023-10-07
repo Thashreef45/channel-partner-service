@@ -7,6 +7,8 @@ import login from '../../application/usecase/login'
 import createCP from '../../application/usecase/create-cp'
 import getEmployees from '../../application/usecase/get-employees'
 import CreateNewEmployee from '../../application/usecase/add-new-employee'
+import getFdmDetails from '../../application/usecase/get-cp-fdms'
+import setFdmToNodal from '../../application/usecase/assign-fdm-nodal'
 
 export default {
 
@@ -56,7 +58,7 @@ export default {
         }
     },
 
-    getCpEmployees : async (call:any,callback:any)=>{
+    getCpEmployees : async (call:any,callback:GrpcCallBack)=>{
         try {
             const response = await getEmployees(call.request.token)
             callback(null,response)
@@ -65,9 +67,27 @@ export default {
         }
     },
 
-    CreateNewEmployee : async (call:any,callback:any) => {
+    CreateNewEmployee : async (call:any,callback:GrpcCallBack) => {
         try {
             const response = await CreateNewEmployee(call.request)
+            callback(null,response)
+        } catch (error) {
+            
+        }
+    },
+
+    getCpFdmDetails : async (call:any,callback:GrpcCallBack)=> {
+        try {
+            const response =  await getFdmDetails(call.request.token)
+            callback(null,response)
+        } catch (error) {
+            
+        }
+    },
+
+    assignFdmtoNodal : async(call:any,callback:GrpcCallBack) => {
+        try {
+            const response = await setFdmToNodal(call.request)
             callback(null,response)
         } catch (error) {
             

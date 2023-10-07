@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken"
 
-const decryptToken = (token: string) => {
+const decryptToken = (token: string) => {    
     let id
     token = token.split(" ")[1]
     const jwtSignature = String(process.env.JWT_SIGNATURE)
