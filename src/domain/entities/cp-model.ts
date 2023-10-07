@@ -25,14 +25,21 @@ const cpModel: Schema = new Schema({
   },
   password: String,
   fdm: {
-    sending :[
-      {consignmentId:String}
-    ],
-    recieved : [
-      {consignmentId:String}
-    ]
+    sending: {
+      type: [String],
+      default: [],
+    },
+    received: {
+      type: [String],
+      default: [],
+    },
   }
+  
 })
+
 
 const Model = model('channel-partner', cpModel)
 export default Model
+
+
+

@@ -1,12 +1,11 @@
 import * as amqp from 'amqplib'
 import { config } from 'dotenv'
 import repository from '../../../infrastructure/repositories/repository'
-import bookingToFdm from '../../usecase/create-fdm'
 config()
 
-const removeAwb = async() => {
+const resetAwb = async () => {
     try {
-        const queue = 'remove-awb'
+        const queue = 'reset-awb'
         const connection = await amqp.connect(String(process.env.RabbitMq_PORT))
         const channel = await connection.createChannel()
         await channel.assertQueue(queue)
@@ -20,14 +19,12 @@ const removeAwb = async() => {
 }
 
 
-const execute = (data:any) => {
+const execute = async (data: any) => {
     data = JSON.parse(data)
-    if(data.awbPrefix !== 'PR' && data.awbPrefix !== "WE"){
-        console.log(data.awbPrefix,'prefix here',data,'<<')
-        data.awbPrefix = 'normal'
-    }
-    repository.removeAwb(data.cpId,data.awbPrefix,data.awb)
-    bookingToFdm(data.cpId,data.awbPrefix,data.awb)
+    if (data.prefix != "PR" && data.prefix != "WE") data.prefix = 'normal'
+
+    await repository.removeRecentbooking(data.id, data.prefix + data.awb)
+    await repository.resestAwb(data)
 }
 
-export default removeAwb
+export default resetAwb
