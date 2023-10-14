@@ -3,7 +3,6 @@ import decryptToken from "../../utils/token-dcrypt"
 
 
 const ValidateAwb = async (data: any) => {
-
     const id = decryptToken(data.token)
     const cpExist = await repository.findById(id)
     if (!cpExist) {
@@ -38,7 +37,7 @@ const normalConsignmentValidation = async (data: any, prefix: string, awb: numbe
     if (CheckPrefix.consignmentPrefix != prefix) {
         return { message: 'Invalid AWB', status: 400 }
     } else {
-        return await validateAwbExistence(data,prefix,awb)
+        return await validateAwbExistence(data,'normal',awb)
     }
 }
 

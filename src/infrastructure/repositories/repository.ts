@@ -9,6 +9,7 @@ export default {
             id: data.id,
             address: data.address,
             pincode: data.pincode,
+            name: data.name,
             nodalPoint: data.nodalPoint,
             phone: data.phone,
             email: data.email,
@@ -46,7 +47,7 @@ export default {
         return await Model.findOne({ id: cpId, [`consignments.${prefix}`]: { $in: [awbNumber] } }, { password: 0, fdm: 0, employee: 0, consignments: 0 })
     },
 
-    //remove used awb after bookin
+    //remove used awb after booking
     removeAwb: async (cpId: string, prefix: string, awbNumber: number) => {
         const consignments: any = {}
         const key: string = "consignments." + prefix
@@ -88,20 +89,35 @@ export default {
             },
             {
                 $set: { fdmCount: { $size: '$fdm.sending' } }
-            }, {
+            },
+            {
                 $project: { fdmCount: 1, _id: 0, id: 1 }
             }
         ])
     },
 
-    getFdmByCp : async(nodalId:string,id:string) => {
-        return await Model.findOne({id:id,nodalPoint:nodalId},{_id:0,'fdm.sending':1})
+    getFdmByCp: async (nodalId: string, id: string) => {
+        return await Model.findOne({ id: id, nodalPoint: nodalId }, { _id: 0, 'fdm.sending': 1 })
     },
 
     //removing booked fdm before transfering to nodalPoint
-    removeSendingFdms : async(nodalId:string,id:string) => {
+    removeSendingFdms: async (nodalId: string, id: string) => {
         return await Model.updateOne(
-            {id:id,nodalPoint:nodalId},
-            {$set:{'fdm.sending':[]}})
+            { id: id, nodalPoint: nodalId },
+            { $set: { 'fdm.sending': [] } })
+    },
+
+
+    recieveFdm: async (id: string, awb: string) => {
+        return await Model.updateOne(
+            { id: id },
+            {
+                $push: {
+                    'fdm.received':awb
+                }
+            }
+        )
     }
 } 
+
+
