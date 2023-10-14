@@ -1,12 +1,11 @@
 import * as amqp from 'amqplib'
 import { config } from 'dotenv'
 import repository from '../../../infrastructure/repositories/repository'
-import bookingToFdm from '../../usecase/create-fdm'
 config()
 
-const removeAwb = async() => {
+const recieveFdm = async () => {
     try {
-        const queue = 'remove-awb'
+        const queue = 'transfer-fdm-cp-receiving'
         const connection = await amqp.connect(String(process.env.RabbitMq_PORT))
         const channel = await connection.createChannel()
         await channel.assertQueue(queue)
@@ -20,13 +19,9 @@ const removeAwb = async() => {
 }
 
 
-const execute = (data:any) => {
+const execute = async (data: any) => {
     data = JSON.parse(data)
-    bookingToFdm(data.cpId,data.awbPrefix,data.awb)
-    if(data.awbPrefix !== 'PR' && data.awbPrefix !== "WE"){
-        data.awbPrefix = 'normal'
-    }
-    repository.removeAwb(data.cpId,data.awbPrefix,data.awb)
+    repository.recieveFdm(data.id,data.awb)
 }
 
-export default removeAwb
+export default recieveFdm

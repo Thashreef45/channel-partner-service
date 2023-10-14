@@ -9,6 +9,8 @@ import grpcServer from './src/interfaces/grpc-config/grpc-server';
 import addConsignments from './src/application/events/consumers/assign-consignments';
 import removeAwb from './src/application/events/consumers/remove-booked-awb';
 import resetAwb from './src/application/events/consumers/reset-awb';
+import getCpDetailsReq from './src/application/events/consumers/get-cp-details-req';
+import recieveFdm from './src/application/events/consumers/recieve-fdm';
 
 
 class nodeApp {
@@ -36,6 +38,8 @@ class nodeApp {
     addConsignments()
     removeAwb()
     resetAwb()
+    getCpDetailsReq()
+    recieveFdm()
   }
 
   private initiliseGatewayListner(): void {
