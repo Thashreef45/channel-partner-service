@@ -10,12 +10,15 @@ const cpModel: Schema = new Schema({
   email: String,
   nodalPoint: String,
   consignmentPrefix: String,
-  apex: String,
   employee: [
     {
       name:String,
       email:String,
-      phone:Number
+      phone:Number,
+      isWorking:{
+        type:Boolean,
+        default:true
+      }
     }
   ],
   consignments: {
@@ -29,7 +32,7 @@ const cpModel: Schema = new Schema({
       type: [String],
       default: [],
     },
-    received: {
+    recieved: {
       type: [String],
       default: [],
     },

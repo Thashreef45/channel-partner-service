@@ -2,6 +2,9 @@ import connectDB from "../../utils/dbConnection";
 import Model from "../../domain/entities/cp-model";
 connectDB()
 
+import { Types } from 'mongoose';
+
+
 export default {
 
     createCP: async (data: any) => {
@@ -57,7 +60,18 @@ export default {
     },
 
     getCpEmployees: async (id: string) => {
-        return await Model.findOne({ id: id }, { _id: 0, employee: 1 })
+        // return await Model.findOne({ id: id ,}, { _id: 0, employee: 1 })
+        return await Model.aggregate([
+            {
+                $match: { id: id },
+            },
+            {
+                $project: { _id: 0, employee: 1 }
+            },
+            {
+                $match: { "employee.isWorking": true }
+            }
+        ])
     },
 
     addEmployee: async (id: string, data: any) => {
@@ -112,12 +126,47 @@ export default {
         return await Model.updateOne(
             { id: id },
             {
-                $push: {
-                    'fdm.received':awb
+                $addToSet: {
+                    'fdm.recieved': awb
                 }
             }
         )
-    }
-} 
+    },
+
+    removeFromRecievedQueueByPincode: async (data: { pincode: number, awb: string }) => {
+        return await Model.updateOne(
+            { pincode: data.pincode },
+            {
+                $pull: { 'fdm.recieved': data.awb }
+            })
+    },
+
+    getAnEmployee: async (id: string, cpId: string) => {
+        return await Model.aggregate([
+            {
+                $match: { id: cpId }
+            },
+            {
+                $project: {
+                    employee: {
+                        $filter: {
+                            input: "$employee",
+                            as: "curr",
+                            cond: { $eq: ["$$curr._id", new Types.ObjectId(id)] }
+                        }
+                    },
+                    _id: 0
+                }
+            },
+            {
+                $unwind: "$employee"
+            },
+            {
+                $replaceRoot: { newRoot: "$employee" }
+            }
+        ])
+
+    },
+}
 
 

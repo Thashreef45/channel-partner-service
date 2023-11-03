@@ -27,10 +27,29 @@ interface ValidateAwbCall {
     }
 }
 
+interface GetCpEmployees {
+    request: {
+        token : string;
+    }
+}
+
+
+interface CreateNewEmployeeCall {
+    request: {
+        name : string;
+        email : string;
+        token : string;
+        phone : number
+    }
+}
+
+
 export {
     GrpcCallBack,
     CpdataCall,
     SearchByPinCall,
     SearchById,
-    ValidateAwbCall
+    ValidateAwbCall,
+    GetCpEmployees,
+    CreateNewEmployeeCall
 }

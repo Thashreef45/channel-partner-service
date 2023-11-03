@@ -4,7 +4,7 @@ import decryptToken from "../../utils/token-dcrypt"
 const cpData = async (id: string) => {
     try {
 
-        id = decryptToken(id)
+        id = String(decryptToken(id))
 
         const data = await repository.getCpData(id)
         if (data) {
