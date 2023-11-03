@@ -11,6 +11,8 @@ import removeAwb from './src/application/events/consumers/remove-booked-awb';
 import resetAwb from './src/application/events/consumers/reset-awb';
 import getCpDetailsReq from './src/application/events/consumers/get-cp-details-req';
 import recieveFdm from './src/application/events/consumers/recieve-fdm';
+import getCpDetailsToApex from './src/application/events/consumers/get-cp-details-apex';
+import removeRecievedFdm from './src/application/events/consumers/remove-recieved-fdm';
 
 
 class nodeApp {
@@ -40,6 +42,8 @@ class nodeApp {
     resetAwb()
     getCpDetailsReq()
     recieveFdm()
+    getCpDetailsToApex()
+    removeRecievedFdm()
   }
 
   private initiliseGatewayListner(): void {

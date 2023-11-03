@@ -3,7 +3,7 @@ import decryptToken from "../../utils/token-dcrypt"
 
 
 const ValidateAwb = async (data: any) => {
-    const id = decryptToken(data.token)
+    const id = String(decryptToken(data.token))
     const cpExist = await repository.findById(id)
     if (!cpExist) {
         return { message: 'Unable to find CP', status: 404 }

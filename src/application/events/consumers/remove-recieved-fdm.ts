@@ -3,9 +3,9 @@ import { config } from 'dotenv'
 import repository from '../../../infrastructure/repositories/repository'
 config()
 
-const recieveFdm = async () => {
+const removeRecievedFdm = async () => {
     try {
-        const queue = 'transfer-fdm-cp-recieving'
+        const queue = 'remove-recieved-awb'
         const connection = await amqp.connect(String(process.env.RabbitMq_PORT))
         const channel = await connection.createChannel()
         await channel.assertQueue(queue)
@@ -21,7 +21,7 @@ const recieveFdm = async () => {
 
 const execute = async (data: any) => {
     data = JSON.parse(data)
-    repository.recieveFdm(data.id,data.awb)
+    await repository.removeFromRecievedQueueByPincode(data)
 }
 
-export default recieveFdm
+export default removeRecievedFdm

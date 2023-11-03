@@ -36,6 +36,7 @@ server.addService(cpPackage.cpService.service,{
     "createEmployee":controller.CreateNewEmployee,
     "fdmToNodal":controller.getCpFdmDetails,
     "assignFdmToNodal":controller.assignFdmtoNodal,
+    "getAnEmployee":controller.getAnEmployeeData,
     
 })
 

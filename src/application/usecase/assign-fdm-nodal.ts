@@ -4,7 +4,7 @@ import publisher from "../events/publisher/publisher"
 
 
 const setFdmToNodal = async (data: { token: string, id: string,address:string,name:string }) => {
-    const nodalId = decryptToken(data.token)
+    const nodalId = String(decryptToken(data.token))
     const fdmData = await repository.getFdmByCp(nodalId, data.id)
     let fdm
     if (fdmData) {

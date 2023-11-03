@@ -4,11 +4,11 @@ import repository from '../../../infrastructure/repositories/repository';
 config()
 
 
-const queue = 'get-cp-details'
+const queue = 'cp-details-to-apex';
 const URL = String(process.env.RabbitMq_PORT)
 
 
-const getCpDetailsReq = async () => {
+const getCpDetailsToApex = async () => {
     const connection = await amqp.connect(URL)
     const channel = await connection.createChannel()
     await channel.assertQueue(queue)
@@ -19,16 +19,16 @@ const getCpDetailsReq = async () => {
                 data.properties.replyTo,
                 Buffer.from(JSON.stringify(cpData)),
                 { correlationId: data.properties.correlationId }
-            );    
+            );
         }
         channel.ack(data)
     })
 }
 
-export default getCpDetailsReq
+export default getCpDetailsToApex
 
 const executeResponse = async(data: any) => {
     data = JSON.parse(data)
-    let response:any = await repository.findByPin(data.pin)
-    return {id:response.id,address:response.address,name:response.name,prefix:response.consignmentPrefix}
+    let response:any = await repository.findByPin(data.pincode)
+    return {nodalId:response.nodalPoint,prefix:response.consignmentPrefix}
 }
